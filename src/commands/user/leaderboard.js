@@ -20,4 +20,16 @@ module.exports = (bot) => {
     const me = await pool.query(
       `
       SELECT points,
-      (SELECT COUNT(*) + 1 FROM users WHERE points > u.points) AS ran*
+      (SELECT COUNT(*) + 1 FROM users WHERE points > u.points) AS rank
+      FROM users u WHERE id=$1
+      `,
+      [ctx.from.id]
+    );
+
+    if (me.rows.length > 0) {
+      msg += `\n👤 You\nRank: ${me.rows[0].rank}\nPoints: ${me.rows[0].points}\nRole: ${getRole(me.rows[0].points)}`;
+    }
+
+    ctx.reply(msg);
+  });
+};
