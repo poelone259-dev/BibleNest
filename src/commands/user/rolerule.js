@@ -1,3 +1,5 @@
+console.log("rolerule loaded");
+
 module.exports = (bot) => {
   bot.command("rolerule", (ctx) => {
     ctx.reply(
