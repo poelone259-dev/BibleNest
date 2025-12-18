@@ -1,0 +1,41 @@
+require("dotenv").config();
+const { Telegraf } = require("telegraf");
+const pool = require("./db");
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
+
+// Register user
+bot.use(async (ctx, next) => {
+  if (!ctx.from) return next();
+  await pool.query(
+    `INSERT INTO users (id, username, first_name)
+     VALUES ($1,$2,$3)
+     ON CONFLICT (id) DO NOTHING`,
+    [ctx.from.id, ctx.from.username, ctx.from.first_name]
+  );
+  next();
+});
+
+require("./jobs/monthlyReward");
+
+// User commands
+require("./commands/user/work")(bot);
+require("./commands/user/point")(bot);
+require("./commands/user/role")(bot);
+require("./commands/user/rolerule")(bot);
+require("./commands/user/verse")(bot);
+require("./commands/user/items")(bot);
+require("./commands/user/buy")(bot);
+require("./commands/user/leaderboard")(bot);
+require("./commands/user/help")(bot);
+require("./commands/user/adminContact")(bot);
+
+// Admin commands
+require("./commands/admin/userlist")(bot);
+require("./commands/admin/addpoint")(bot);
+require("./commands/admin/removepoint")(bot);
+require("./commands/admin/buyers")(bot);
+require("./commands/admin/userinfo")(bot);
+
+bot.launch();
+console.log("✅ BibleNest Bot is running");
