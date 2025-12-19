@@ -29,7 +29,7 @@ bot.use(async (ctx, next) => {
 bot.start((ctx) => {
   ctx.reply("✅ BibleNest bot alive");
 });
-  
+
 
 require("./jobs/monthlyReward");
 
@@ -51,6 +51,23 @@ require("./commands/admin/addpoint")(bot);
 require("./commands/admin/removepoint")(bot);
 require("./commands/admin/buyers")(bot);
 require("./commands/admin/userinfo")(bot);
+
+// /get_id @username
+if (cmd === "/get_id") {
+  if (!isAdmin(msg.from.id)) return;
+
+  if (!msg.reply_to_message) {
+    bot.sendMessage(msg.chat.id, "🔎 Reply to a user's message and type /get_id");
+    return;
+  }
+
+  const target = msg.reply_to_message.from;
+  bot.sendMessage(
+    msg.chat.id,
+    `👤 Username: @${target.username || "No username"}\n🆔 User ID: ${target.id}`
+  );
+}
+
 
 bot.launch()
   .then(() => console.log("✅ BibleNest Bot is running"))
