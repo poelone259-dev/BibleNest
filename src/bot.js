@@ -29,7 +29,7 @@ bot.use(async (ctx, next) => {
 bot.start((ctx) => {
   ctx.reply("✅ BibleNest bot alive");
 });
-
+  
 
 require("./jobs/monthlyReward");
 

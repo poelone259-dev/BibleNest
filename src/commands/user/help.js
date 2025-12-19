@@ -13,13 +13,8 @@ module.exports = (bot) => {
       "/items - လက်ဆောင်စာရင်း\n" +
       "/buy <item> - Point ဖြင့် လက်ဆောင်ဝယ်\n" +
       "/leaderboard - Top Users\n" +
-      "/admin - Admin ကို ဆက်သွယ်\n\n" +
-      "⚙️ Admin Commands\n" +
-      "/userlist\n" +
-      "/addpoint <id> <amount>\n" +
-      "/removepoint <id> <amount>\n" +
-      "/buyers\n" +
-      "/users <id>"
+      "/admin - Admin ကို ဆက်သွယ်" 
+     
     );
   });
 };
