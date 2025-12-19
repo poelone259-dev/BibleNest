@@ -9,15 +9,27 @@ console.log("bot.js loaded");
 
 // Register user
 bot.use(async (ctx, next) => {
-  if (!ctx.from) return next();
-  await pool.query(
-    `INSERT INTO users (id, username, first_name)
-     VALUES ($1,$2,$3)
-     ON CONFLICT (id) DO NOTHING`,
-    [ctx.from.id, ctx.from.username, ctx.from.first_name]
-  );
-  next();
+  try {
+    if (!ctx.from) return next();
+
+    await pool.query(
+      `INSERT INTO users (id, username, first_name)
+       VALUES ($1,$2,$3)
+       ON CONFLICT (id) DO NOTHING`,
+      [ctx.from.id, ctx.from.username, ctx.from.first_name]
+    );
+
+    return next();
+  } catch (err) {
+    console.error("User register error:", err);
+    return next(); // ❗ မဖြစ်မနေ
+  }
 });
+
+bot.start((ctx) => {
+  ctx.reply("✅ BibleNest bot alive");
+});
+
 
 require("./jobs/monthlyReward");
 

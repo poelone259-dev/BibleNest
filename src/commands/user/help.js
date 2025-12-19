@@ -1,3 +1,5 @@
+console.log("help command loaded");
+
 module.exports = (bot) => {
   bot.command("help", (ctx) => {
     ctx.reply(
