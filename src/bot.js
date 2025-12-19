@@ -4,6 +4,9 @@ const pool = require("./db");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
+console.log("bot.js loaded");
+
+
 // Register user
 bot.use(async (ctx, next) => {
   if (!ctx.from) return next();
@@ -37,5 +40,10 @@ require("./commands/admin/removepoint")(bot);
 require("./commands/admin/buyers")(bot);
 require("./commands/admin/userinfo")(bot);
 
-bot.launch();
-console.log("✅ BibleNest Bot is running");
+bot.launch()
+  .then(() => console.log("✅ BibleNest Bot is running"))
+  .catch((err) => console.error("❌ Bot launch error:", err));
+
+// Graceful stop (Railway / Heroku style)
+process.once("SIGINT", () => bot.stop("SIGINT"));
+process.once("SIGTERM", () => bot.stop("SIGTERM"));
